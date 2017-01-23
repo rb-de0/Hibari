@@ -5,10 +5,10 @@ import Himotoki
 struct ProjectGetRequest: ProducteevRequest {
     
     let accessToken: String
-    let id: String
+    let networkId: String
     
     var path: String {
-        return "/networks/\(id)/projects"
+        return "/networks/\(networkId)/projects"
     }
     
     var method: HTTPMethod {

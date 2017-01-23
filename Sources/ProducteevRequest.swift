@@ -12,25 +12,8 @@ extension ProducteevRequest {
     }
     
     var headerFields: [String : String] {
-        return ["Authorization": "Bearer \(accessToken)"]
-    }
-}
-
-struct TestRequest: Request {
-    
-    var baseURL: URL {
-        return URL(string: "https://www.google.com")!
-    }
-    
-    var path: String {
-        return "/"
-    }
-    
-    var method: HTTPMethod {
-        return .get
-    }
-    
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> String {
-        return object as! String
+        return [
+            "Authorization": "Bearer \(accessToken)"
+        ]
     }
 }

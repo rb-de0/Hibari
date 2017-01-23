@@ -15,7 +15,7 @@ struct HTTPClient {
             case .success(let res):
                 response = res
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error)
                 exit(1)
             }
             
