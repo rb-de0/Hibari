@@ -17,6 +17,5 @@ struct ProjectGetRequest: ProducteevRequest {
     
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> [Project] {
         return try decodeArray(object, rootKeyPath: "projects") as [Project]
-        
     }
 }

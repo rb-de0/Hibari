@@ -1,10 +1,44 @@
 import Himotoki
 
+enum TaskStatus {
+    case completed
+    case active
+    case inProgress
+    case pause
+    
+    init?(status: Int, progressionStatus: Int?) {
+        
+        switch (status, progressionStatus) {
+        case (0, _):
+            self = .completed
+        case (1, nil):
+            self = .active
+        case (1, let pStatus) where pStatus == 1:
+            self = .inProgress
+        case (1, let pStatus) where pStatus == 2:
+            self = .pause
+        default:
+            return nil
+        }
+    }
+}
+
 struct Task: Decodable {
     let id: String
     let title: String
+    let deadline: String?
+    let status: TaskStatus?
+    let noteCount: Int?
+    let subTasks: [Task]?
     
     static func decode(_ e: Extractor) throws -> Task {
-        return try Task(id: e <| "id", title: e <| "title")
+        return try Task(
+            id: e <| "id",
+            title: e <| "title",
+            deadline: e <|? "deadline",
+            status: TaskStatus(status: e <| "status", progressionStatus: e <|? "progression_status"),
+            noteCount: e <|? "noteCount",
+            subTasks: e <||? "subtasks"
+        )
     }
 }
