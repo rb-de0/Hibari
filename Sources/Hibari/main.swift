@@ -7,4 +7,6 @@ let accessToken = ask("Enter accessToken?", type: String.self)
 
 let networks = ProducteevClient.fetchData(accessToken: accessToken)
 
-print(networks)
+networks.forEach {
+    print($0)
+}
