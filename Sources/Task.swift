@@ -23,13 +23,23 @@ enum TaskStatus {
     }
 }
 
-struct Task: Decodable {
+final class Task: Decodable {
     let id: String
     let title: String
     let deadline: String?
     let status: TaskStatus?
     let noteCount: Int?
     let subTasks: [Task]?
+    var notes = [Note]()
+    
+    init(id: String, title: String, deadline: String?, status: TaskStatus?, noteCount: Int?, subTasks: [Task]?) {
+        self.id = id
+        self.title = title
+        self.deadline = deadline
+        self.status = status
+        self.noteCount = noteCount
+        self.subTasks = subTasks
+    }
     
     static func decode(_ e: Extractor) throws -> Task {
         return try Task(
