@@ -32,15 +32,20 @@ struct AsanaClient {
         
         print("start creating tasks".f.White)
         
-        for task in tasks {
+        for task in tasks.reversed() {
             
             print("creating task \(task.title)".f.Green)
             
             let request = TaskCreateRequest(dueOn: task.deadline, name: task.title, projectId: projectId, parentId: nil, completed: task.status.isComleted)
             let taskStatus = HTTPClient.send(with: request)
             
-            createNotes(task.notes, into: taskStatus.id)
-            createSubTasks(task.subTasks ?? [], into: taskStatus.id)
+            if !task.notes.isEmpty {
+                createNotes(task.notes, into: taskStatus.id)
+            }
+            
+            if let subTasks = task.subTasks, !subTasks.isEmpty {
+                createSubTasks(subTasks, into: taskStatus.id)
+            }
         }
     }
     
@@ -56,7 +61,7 @@ struct AsanaClient {
         }
     }
     
-    private static func createSubTasks(_ subTasks: [Task], into taskId: Int ) {
+    private static func createSubTasks(_ subTasks: [Task], into taskId: Int) {
         
         print("start creating subtasks".f.White)
         
