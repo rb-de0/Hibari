@@ -19,6 +19,7 @@ struct HTTPClient {
                 exit(1)
             }
             
+            sleep(2)
             semaphore.signal()
         }
         

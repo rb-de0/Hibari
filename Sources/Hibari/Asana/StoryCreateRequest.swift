@@ -4,7 +4,6 @@ import Himotoki
 
 struct StoryCreateRequest: AsanaRequest {
     
-    let accessToken: String
     let text: String
     let taskId: Int
     

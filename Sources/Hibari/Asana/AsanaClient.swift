@@ -3,55 +3,69 @@ import Dispatch
 
 struct AsanaClient {
     
-    static func put(network: Network, workspaceName: String, accessToken: String) {
+    static func put(network: Network, workspaceName: String) {
         
         print("Fetching workspaces".f.Green)
         
-        guard let workspace = HTTPClient.send(with: WorkspaceGetRequest(accessToken: accessToken)).filter({$0.name == workspaceName}).first else {
+        guard let workspace = HTTPClient.send(with: WorkspaceGetRequest()).filter({$0.name == workspaceName}).first else {
             return
         }
         
-        print("start creating projects".f.Green)
+        createProjects(network.projects, into: workspace.id)
+    }
+    
+    private static func createProjects(_ projects: [Project], into workspaceId: Int)  {
         
-        for project in network.projects {
+        print("start creating projects".f.White)
+        
+        for project in projects {
             
             print("creating project \(project.title)".f.Green)
             
-            let projectStatus = HTTPClient.send(with: ProjectCreateRequest(accessToken: accessToken, name: project.title, workspace: workspace.id))
-            sleep(2)
+            let projectStatus = HTTPClient.send(with: ProjectCreateRequest(name: project.title, workspace: workspaceId))
             
-            print("start creating tasks".f.Green)
+            createTasks(project.tasks, into: projectStatus.id)
+        }
+    }
+    
+    private static func createTasks(_ tasks: [Task], into projectId: Int) {
+        
+        print("start creating tasks".f.White)
+        
+        for task in tasks {
             
-            for task in project.tasks {
-                
-                print("creating task \(task.title)".f.Green)
-                
-                let request = TaskCreateRequest(accessToken: accessToken, dueOn: task.deadline, name: task.title, projectId: projectStatus.id, parentId: nil, completed: task.status.isComleted)
-                let taskStatus = HTTPClient.send(with: request)
-                sleep(2)
-                
-                print("start creating notes".f.Green)
-                
-                for note in task.notes {
-                    
-                    print("creating note \(note.message)".f.Green)
-                    
-                    _ = HTTPClient.send(with: StoryCreateRequest(accessToken: accessToken, text: note.message, taskId: taskStatus.id))
-                    sleep(2)
-                }
-                
-                print("start creating subtasks".f.Green)
-                
-                for subtask in task.subTasks ?? [] {
-                    
-                    print("creating note \(subtask.title)".f.Green)
-                    
-                    let request = TaskCreateRequest(accessToken: accessToken, dueOn: subtask.deadline, name: subtask.title, projectId: nil, parentId: taskStatus.id, completed: subtask.status.isComleted)
-                    _ = HTTPClient.send(with: request)
-                    sleep(2)
-                }
-            }
+            print("creating task \(task.title)".f.Green)
             
+            let request = TaskCreateRequest(dueOn: task.deadline, name: task.title, projectId: projectId, parentId: nil, completed: task.status.isComleted)
+            let taskStatus = HTTPClient.send(with: request)
+            
+            createNotes(task.notes, into: taskStatus.id)
+            createSubTasks(task.subTasks ?? [], into: taskStatus.id)
+        }
+    }
+    
+    private static func createNotes(_ notes: [Note], into taskId: Int) {
+        
+        print("start creating notes".f.White)
+        
+        for note in notes {
+            
+            print("creating note \(note.message)".f.Green)
+            
+            _ = HTTPClient.send(with: StoryCreateRequest(text: note.message, taskId: taskId))
+        }
+    }
+    
+    private static func createSubTasks(_ subTasks: [Task], into taskId: Int ) {
+        
+        print("start creating subtasks".f.White)
+        
+        for subtask in subTasks {
+            
+            print("creating note \(subtask.title)".f.Green)
+            
+            let request = TaskCreateRequest(dueOn: subtask.deadline, name: subtask.title, projectId: nil, parentId: taskId, completed: subtask.status.isComleted)
+            _ = HTTPClient.send(with: request)
         }
     }
 }

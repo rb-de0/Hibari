@@ -1,9 +1,11 @@
 import Foundation
 import APIKit
 
-protocol ProducteevRequest: Request {
-    var accessToken: String { get }
+struct ProducteevConfig {
+     static var accessToken = ""
 }
+
+protocol ProducteevRequest: Request {}
 
 extension ProducteevRequest {
     
@@ -13,7 +15,7 @@ extension ProducteevRequest {
     
     var headerFields: [String : String] {
         return [
-            "Authorization": "Bearer \(accessToken)"
+            "Authorization": "Bearer \(ProducteevConfig.accessToken)"
         ]
     }
 }

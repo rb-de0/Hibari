@@ -3,9 +3,7 @@ import APIKit
 import Himotoki
 
 struct WorkspaceGetRequest: AsanaRequest {
-    
-    let accessToken: String
-    
+
     var path: String {
         return "/workspaces"
     }

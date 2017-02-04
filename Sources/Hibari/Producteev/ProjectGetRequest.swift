@@ -4,7 +4,6 @@ import Himotoki
 
 struct ProjectGetRequest: ProducteevRequest {
     
-    let accessToken: String
     let networkId: String
     
     var path: String {

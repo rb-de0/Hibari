@@ -4,7 +4,6 @@ import Himotoki
 
 struct TaskCreateRequest: AsanaRequest {
     
-    let accessToken: String
     let dueOn: String?
     let name: String
     let projectId: Int?

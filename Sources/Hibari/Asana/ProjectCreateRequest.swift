@@ -4,7 +4,6 @@ import Himotoki
 
 struct ProjectCreateRequest: AsanaRequest {
     
-    let accessToken: String
     let name: String
     let workspace: Int
     

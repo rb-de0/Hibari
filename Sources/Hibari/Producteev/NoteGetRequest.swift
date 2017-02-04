@@ -4,7 +4,6 @@ import Himotoki
 
 struct NoteGetRequest: ProducteevRequest {
     
-    let accessToken: String
     let taskId: String
     
     var path: String {

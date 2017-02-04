@@ -1,9 +1,11 @@
 import Foundation
 import APIKit
 
-protocol AsanaRequest: Request {
-    var accessToken: String { get }
+struct AsanaConfig {
+    static var accessToken = ""
 }
+
+protocol AsanaRequest: Request {}
 
 extension AsanaRequest {
     
@@ -13,7 +15,7 @@ extension AsanaRequest {
     
     var headerFields: [String : String] {
         return [
-            "Authorization": "Bearer \(accessToken)"
+            "Authorization": "Bearer \(AsanaConfig.accessToken)"
         ]
     }
 }
