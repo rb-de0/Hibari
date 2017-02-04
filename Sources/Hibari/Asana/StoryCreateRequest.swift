@@ -2,22 +2,22 @@ import Foundation
 import APIKit
 import Himotoki
 
-struct ProjectCreateRequest: AsanaRequest {
+struct StoryCreateRequest: AsanaRequest {
     
     let accessToken: String
-    let name: String
-    let workspace: Int
+    let text: String
+    let taskId: Int
     
     var path: String {
-        return "/projects"
+        return "/tasks/\(taskId)/stories"
+    }
+    
+    var parameters: Any? {
+        return ["data": ["text": text]]
     }
     
     var method: HTTPMethod {
         return .post
-    }
-    
-    var parameters: Any? {
-        return ["data": ["name": name, "workspace": workspace, "public": false]]
     }
     
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> AsanaObjectStatus {

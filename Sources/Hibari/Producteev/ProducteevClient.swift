@@ -2,7 +2,7 @@ import Swiftline
 
 struct ProducteevClient {
 
-    static func fetchData(accessToken: String) -> [Network] {
+    static func fetch(accessToken: String) -> [Network] {
         
         print("Fetching networks".f.Green)
         
