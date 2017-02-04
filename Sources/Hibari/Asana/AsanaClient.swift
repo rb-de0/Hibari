@@ -26,7 +26,8 @@ struct AsanaClient {
                 
                 print("creating task \(task.title)".f.Green)
                 
-                let taskStatus = HTTPClient.send(with: TaskCreateRequest(accessToken: accessToken, dueOn: task.deadline, name: task.title, projectId: projectStatus.id, parentId: nil))
+                let request = TaskCreateRequest(accessToken: accessToken, dueOn: task.deadline, name: task.title, projectId: projectStatus.id, parentId: nil, completed: task.status.isComleted)
+                let taskStatus = HTTPClient.send(with: request)
                 sleep(2)
                 
                 print("start creating notes".f.Green)
@@ -45,7 +46,8 @@ struct AsanaClient {
                     
                     print("creating note \(subtask.title)".f.Green)
                     
-                    _ = HTTPClient.send(with: TaskCreateRequest(accessToken: accessToken, dueOn: task.deadline, name: task.title, projectId: nil, parentId: taskStatus.id))
+                    let request = TaskCreateRequest(accessToken: accessToken, dueOn: subtask.deadline, name: subtask.title, projectId: nil, parentId: taskStatus.id, completed: subtask.status.isComleted)
+                    _ = HTTPClient.send(with: request)
                     sleep(2)
                 }
             }

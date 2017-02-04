@@ -6,7 +6,7 @@ enum TaskStatus {
     case inProgress
     case pause
     
-    init?(status: Int, progressionStatus: Int?) {
+    init(status: Int, progressionStatus: Int?) {
         
         switch (status, progressionStatus) {
         case (0, _):
@@ -18,8 +18,12 @@ enum TaskStatus {
         case (1, let pStatus) where pStatus == 2:
             self = .pause
         default:
-            return nil
+            self = .active
         }
+    }
+    
+    var isComleted: Bool {
+        return self == .completed
     }
 }
 
@@ -27,12 +31,12 @@ final class Task: Decodable {
     let id: String
     let title: String
     let deadline: String?
-    let status: TaskStatus?
+    let status: TaskStatus
     let noteCount: Int?
     let subTasks: [Task]?
     var notes = [Note]()
     
-    init(id: String, title: String, deadline: String?, status: TaskStatus?, noteCount: Int?, subTasks: [Task]?) {
+    init(id: String, title: String, deadline: String?, status: TaskStatus, noteCount: Int?, subTasks: [Task]?) {
         self.id = id
         self.title = title
         self.deadline = deadline
