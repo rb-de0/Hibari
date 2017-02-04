@@ -51,7 +51,7 @@ final class Task: Decodable {
             title: e <| "title",
             deadline: e <|? "deadline",
             status: TaskStatus(status: e <| "status", progressionStatus: e <|? "progression_status"),
-            noteCount: e <|? "noteCount",
+            noteCount: e <|? "notes_count",
             subTasks: e <||? "subtasks"
         )
     }

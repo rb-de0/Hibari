@@ -67,7 +67,7 @@ struct AsanaClient {
         
         for subtask in subTasks {
             
-            print("creating note \(subtask.title)".f.Green)
+            print("creating subtasks \(subtask.title)".f.Green)
             
             let request = TaskCreateRequest(dueOn: subtask.deadline, name: subtask.title, projectId: nil, parentId: taskId, completed: subtask.status.isComleted)
             _ = HTTPClient.send(with: request)
